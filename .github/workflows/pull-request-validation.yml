@@ -1,0 +1,24 @@
+name: Validate PR Title
+
+on:
+  pull_request:
+    types: [opened, edited, reopened]
+
+jobs:
+  check-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate SPA number in PR title
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+
+          echo "PR Title: $TITLE"
+
+          # Regex: SPA- followed by digits (e.g., SPA-1234)
+          if [[ ! "$TITLE" =~ SPA-[0-9]+ ]]; then
+            echo "❌ ERROR: PR title must contain an SPA number (e.g., SPA-1234)"
+            exit 1
+          fi
+
+          echo "✅ PR title contains SPA number"
+          
