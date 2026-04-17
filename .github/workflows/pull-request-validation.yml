@@ -1,4 +1,4 @@
-name: Validate PR Title
+add multiplename: Validate PR Title
 
 on:
   pull_request:
@@ -21,11 +21,12 @@ jobs:
           fi
 
           echo "✅ PR title contains SPA number"
-
+  check-description:
+    runs-on: ubuntu-latest
+    steps:
           - name: Validate PR description is not empty
           run: |
           BODY="${{ github.event.pull_request.body }}"
-
           echo "PR Body:"
           echo "$BODY"
 
