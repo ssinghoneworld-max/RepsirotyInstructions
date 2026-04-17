@@ -1,4 +1,4 @@
-name: Validate PR Title
+add multiplename: Validate PR Title
 
 on:
   pull_request:
@@ -21,4 +21,24 @@ jobs:
           fi
 
           echo "✅ PR title contains SPA number"
+  check-description:
+    runs-on: ubuntu-latest
+    steps:
+          - name: Validate PR description is not empty
+          run: |
+          BODY="${{ github.event.pull_request.body }}"
+          echo "PR Body:"
+          echo "$BODY"
+
+          # Check if Description section exists and has content
+          DESCRIPTION=$(echo "$BODY" | awk '/## 📌 Description/{flag=1;next}/##/{flag=0}flag' | tr -d '[:space:]')
+
+          if [ -z "$DESCRIPTION" ]; then
+            echo "❌ ERROR: PR Description section is missing or empty."
+            exit 1
+          fi
+
+          echo "✅ PR Description is present."
+
+
           
